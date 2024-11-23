@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Face Identity</title>
+    <style>
+        /* Set the gradient background */
+        body {
+            background: linear-gradient(to bottom, #006400, #000000); /* Green to Black */
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            color: white;
+        }
+
+        /* Center the form and result */
+        .container {
+            text-align: center;
+            padding: 30px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            max-width: 700px;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 30px;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-size: 20px;
+            margin-right: 10px;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            margin-top: 10px;
+            margin-bottom: 20px;
+            width: 80%;
+            border-radius: 5px;
+            border: none;
+            outline: none;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #32CD32; /* Lime Green */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #228B22; /* Darker Green */
+        }
+
+        button:disabled {
+            background-color: #6c757d; /* Gray color when disabled */
+            cursor: not-allowed;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Verify Face Identity</h1>
+        <form id="uploadForm" action="{% url 'verify_image' %}" method="get">
+            <label for="imagePath">Enter your image path here</label>
+            <input type="text" id="imagePath" name="Image_Path" placeholder="Enter the image path here" required>
+            <button id="submitBtn" type="submit">Verify</button>
+        </form>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        // Use JavaScript to handle the result
+        document.getElementById('uploadForm').onsubmit = async function(event) {
+            event.preventDefault();
+            const form = event.target;
+            const submitButton = document.getElementById('submitBtn');
+            submitButton.disabled = true;  // Disable the submit button
+
+            try {
+                const response = await fetch(form.action + '?Image_Path=' + document.getElementById('imagePath').value);
+                const data = await response.json();
+
+                if (data.error) {
+                    document.getElementById('result').textContent = "Error: " + data.error;
+                } else {
+                    document.getElementById('result').textContent = "Recognized Name is : " + data.Face_Name;
+                }
+            } catch (error) {
+                document.getElementById('result').textContent = "Error: " + error.message;
+            } finally {
+                submitButton.disabled = false;  // Re-enable the submit button after the response
+            }
+        };
+    </script>
+</body>
+</html>
