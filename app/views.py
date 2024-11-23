@@ -60,7 +60,7 @@ def verify_image(request):
             with open('app/models/svm_model.pkl', 'rb') as f:
                 model = pickle.load(f)
         except:
-            url = "https://drive.google.com/file/d/1tYz4bAd4faUEm6dlrvbzL58zgniUcXru/view?usp=drive_link"
+            url = "https://drive.google.com/file/d/1uxdvxNlASf52cJbWU99H3WHyv2riMEbA/view?usp=sharing"
             output = 'app/models/svm_model.pkl'
             gdown.download(url, output, quiet=False)
             with open('app/models/svm_model.pkl', 'rb') as f:
