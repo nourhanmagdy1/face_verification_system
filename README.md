@@ -46,7 +46,7 @@ The Face Verification System is designed to enhance financial inclusion by verif
 
 ### 1. Create a virtual environment
 ```bash
-python3 -m venv venv
+python -m venv venv
 ```
 
 ### 2. Activate the virtual environment

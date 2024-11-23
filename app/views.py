@@ -5,6 +5,7 @@ from mtcnn.mtcnn import MTCNN
 from keras_facenet import FaceNet
 import pickle
 from django.shortcuts import render
+import gdown
 
 
 
@@ -55,8 +56,15 @@ def verify_image(request):
         detector = MTCNN()
         
         # Load trained classifier and name encoder
-        with open('app/models/svm_model.pkl', 'rb') as f:
-            model = pickle.load(f)
+        try:
+            with open('app/models/svm_model.pkl', 'rb') as f:
+                model = pickle.load(f)
+        except:
+            url = "https://drive.google.com/file/d/1tYz4bAd4faUEm6dlrvbzL58zgniUcXru/view?usp=drive_link"
+            output = 'app/models/svm_model.pkl'
+            gdown.download(url, output, quiet=False)
+            with open('app/models/svm_model.pkl', 'rb') as f:
+                model = pickle.load(f)
         with open('app/models/label_encoder.pkl', 'rb') as f:
             encoder = pickle.load(f)
 
